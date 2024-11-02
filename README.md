@@ -232,23 +232,17 @@ Model ini dipilih sebagai model final karena hasilnya yang stabil pada train dan
   MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y_i}| 
   $$
 
-- **MSE (Mean Squared Error)**: MSE menghitung rata-rata dari kuadrat kesalahan, memberikan penekanan lebih pada kesalahan yang lebih besar. Formula MSE adalah:
+- **MSE (Mean Squared Error)**: MSE menghitung rata-rata dari kuadrat kesalahan, memberikan penekanan lebih pada kesalahan yang lebih besar.
 
-  $$
-  MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2 
-  $$
+  `MSE = (1 / n) * Σ (yᵢ - ŷᵢ)²`
 
-- **RMSE (Root Mean Squared Error)**: RMSE merupakan akar dari MSE, yang menjaga unit kesalahan konsisten dengan data. RMSE memberi bobot lebih pada kesalahan besar, sehingga dapat mengidentifikasi ketidakakuratan prediksi yang lebih signifikan. Formula RMSE adalah:
+- **RMSE (Root Mean Squared Error)**: RMSE merupakan akar dari MSE, yang menjaga unit kesalahan konsisten dengan data. RMSE memberi bobot lebih pada kesalahan besar.
 
-  $$
-  RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2} 
-  $$
+  `RMSE = sqrt((1 / n) * Σ (yᵢ - ŷᵢ)²)`
 
-- **SMAPE (Symmetric Mean Absolute Percentage Error)**: SMAPE mengukur persentase kesalahan yang dinormalisasi dengan mempertimbangkan kedua nilai aktual dan prediksi. Ini adalah metrik yang cocok untuk melihat performa model dari segi kesalahan relatif. Formula SMAPE adalah:
+- **SMAPE (Symmetric Mean Absolute Percentage Error)**: SMAPE mengukur persentase kesalahan yang dinormalisasi dengan mempertimbangkan kedua nilai aktual dan prediksi.
 
-  $$
-  SMAPE = \frac{100}{n} \sum_{i=1}^{n} \frac{|y_i - \hat{y_i}|}{(|y_i| + |\hat{y_i}|) / 2} 
-  $$
+  `SMAPE = (100 / n) * Σ (|yᵢ - ŷᵢ| / ((|yᵢ| + |ŷᵢ|) / 2))`
 
 
 
