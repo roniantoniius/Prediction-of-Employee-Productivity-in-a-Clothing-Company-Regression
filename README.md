@@ -243,6 +243,7 @@ Model ini dipilih sebagai model final karena hasilnya yang stabil pada train dan
   $$ SMAPE = \frac{100\%}{n} \sum_{i=1}^{n} \frac{|y_i - \hat{y_i}|}{(|y_i| + |\hat{y_i}|) / 2} $$
 
 
+
   Interpretasi dari SMAPE:
   - **SMAPE = 0%**: Model prediksi sempurna tanpa kesalahan.
   - **SMAPE > 0%**: Menunjukkan adanya kesalahan dalam prediksi, dengan nilai yang lebih rendah menunjukkan performa yang lebih baik.
