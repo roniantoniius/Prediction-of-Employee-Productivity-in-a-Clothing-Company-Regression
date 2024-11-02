@@ -246,9 +246,8 @@ Model ini dipilih sebagai model final karena hasilnya yang stabil pada train dan
 
 - **SMAPE (Symmetric Mean Absolute Percentage Error)**: SMAPE mengukur persentase kesalahan yang dinormalisasi dengan mempertimbangkan kedua nilai aktual dan prediksi. Ini adalah metrik yang cocok untuk melihat performa model dari segi kesalahan relatif. Formula SMAPE adalah:
 
-  \[
-  \text{SMAPE} = \frac{100\%}{n} \sum_{i=1}^{n} \frac{|y_i - \hat{y_i}|}{(|y_i| + |\hat{y_i}|) / 2}
-  \]
+![equation](https://latex.codecogs.com/svg.latex?SMAPE%20%3D%20%5Cfrac%7B100%5C%25%7D%7Bn%7D%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%7Cy_i%20-%20%5Chat%7By_i%7D%7C%7D%7B%28%7Cy_i%7C%20%2B%20%7C%5Chat%7By_i%7D%7C%29%20/%202%7D)
+
 
   Interpretasi dari SMAPE:
   - **SMAPE = 0%**: Model prediksi sempurna tanpa kesalahan.
