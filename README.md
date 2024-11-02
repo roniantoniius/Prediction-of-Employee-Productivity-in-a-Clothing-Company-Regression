@@ -54,6 +54,8 @@ Dataset ini mengandung missing values pada kolom `wip` sebanyak 506 entri atau s
 
 ### Exploratory Data Analysis (EDA)
 Langkah pertama dalam analisis data adalah menangani beberapa variabel yang menunjukkan outlier, yaitu `target_productivity`, `incentive`, `wip`, dan `over_time`. Teknik yang digunakan adalah Interquartile Range (IQR) untuk mendeteksi dan menangani outlier agar tidak mempengaruhi performa model.
+
+
 ![image](https://github.com/user-attachments/assets/475e860c-517a-4a7b-9233-ed5be3532ea5)
 
 ![image](https://github.com/user-attachments/assets/60df1993-362a-4ed8-ba36-efeb231ace1a)
@@ -87,7 +89,6 @@ Distribusi beberapa variabel menunjukkan bentuk yang unik, seperti:
 - `over_time` dan `no_of_workers` cenderung menunjukkan distribusi normal atau bimodal.
 
 ![image](https://github.com/user-attachments/assets/807e3f79-e153-48b8-9b6b-0898a9eb11f9)
-![image](https://github.com/user-attachments/assets/91033874-7525-4a77-9f52-83461137d015)
 
 
 #### Fitur yang Dipilih untuk Model
@@ -119,6 +120,8 @@ Distribusi variabel numerik diperiksa terlebih dahulu untuk menentukan metode sc
 
 ### Feature Selection
 Proses pemilihan fitur dilakukan untuk meningkatkan performa model dengan mengidentifikasi fitur-fitur yang paling relevan terhadap prediksi produktivitas karyawan (`actual_productivity`). Berdasarkan analisis korelasi dengan heatmap, ditemukan bahwa variabel `targeted_productivity` dan `incentive` memiliki korelasi positif terhadap target. Untuk mencari fitur terbaik secara lebih akurat, **Recursive Feature Elimination (RFE)** diterapkan.
+
+
 ![image](https://github.com/user-attachments/assets/4e6ea115-6de6-43dd-9dc0-9c44595a968a)
 
 
@@ -129,9 +132,11 @@ Proses pemilihan fitur dilakukan untuk meningkatkan performa model dengan mengid
 
 ### Handling Imbalance
 Distribusi variabel target `actual_productivity` menunjukkan ketidakseimbangan, di mana 86% data bernilai di atas 0.5. Untuk menangani hal ini, **Synthetic Minority Over-sampling Technique for Regression (SMOTER)** diterapkan, sebuah teknik oversampling yang bertujuan meningkatkan representasi dari nilai-nilai yang kurang umum dalam variabel target. SMOTER memperkirakan sampel sintetis pada kelas-kelas minoritas untuk mendapatkan data yang lebih seimbang, memungkinkan model menangkap variasi yang lebih luas dalam data produktivitas aktual.
+
 ![image](https://github.com/user-attachments/assets/b826a34e-9201-49af-819e-542c1829e308)
 
 Handling Imbalance Case Result:
+
 ![image](https://github.com/user-attachments/assets/fceaeda2-ce67-4774-81d8-dc8d320fdd63)
 
 ## Modeling
@@ -284,15 +289,21 @@ Berdasarkan nilai evaluasi dari keempat metrik, **Cat Boost Regressor** dipilih 
 ### Rekomendasi Hasil Analisis:
 
 1. Tim karyawan yang memiliki target harian yang tinggi cenderung mencapai produktivitas yang lebih tinggi. Tim dengan target harian yang ditetapkan 10% lebih tinggi dari rata-rata (70%), berhasil mencapai target produktivitas yang bagus. Selain itu, jumlah revisi desain yang lebih rendah berkorelasi positif dengan produktivitas yang lebih tinggi. Data menunjukkan bahwa tim dengan perubahan desain minimal hanya memiliki produktivitas 10% lebih tinggi dibandingkan tim yang sering melakukan revisi.
+
+
 ![image](https://github.com/user-attachments/assets/06b3839b-6240-40e6-b3c1-a1164d2e0a70)
 ![image](https://github.com/user-attachments/assets/2d96dbf4-2b3d-4aa5-ab86-3a26000afeda)
 
 
 2. Data menunjukkan bahwa produktivitas menurun dengan meningkatnya lembur. Tim yang bekerja lebih dari 0.6 mengalami penurunan produktivitas sebesar 20% dan akan terus menurun. Ini menunjukkan bahwa kelelahan dan kelebihan beban kerja mengurangi efisiensi buruh. Selain itu, tim yang menghabiskan waktu lebih dari 0.4 per hari pada satu tugas mengalami penurunan produktivitas sebesar 20%. Namun, Jumlah karyawan dalam tim yang optimal juga memainkan peran penting. Tim dengan jumlah pekerja yang sedang pekerja menunjukkan produktivitas yang stabil.
+
+
 ![image](https://github.com/user-attachments/assets/0e047df4-f14a-4ab7-8a3e-9abf9f4e2671)
 ![image](https://github.com/user-attachments/assets/b923c46e-0fcb-4211-90dd-3599e177e904)
 ![image](https://github.com/user-attachments/assets/821ba6cc-2d46-4ac8-bb9f-2e61b143fbd2)
 
 3. Insentif yang tinggi terbukti efektif dalam meningkatkan performa produktivitas tim. Tim yang menerima bonus kinerja menunjukkan peningkatan produktivitas yang signifikan. Selain itu, menjaga idle time tetap rendah juga krusial. Data menunjukkan bahwa tim karyawan dengan tanpa idle time memiliki produktivitas yang 26% lebih tinggi dibandingkan tim dengan idle time. Dengan mengurangi waktu tidak produktif, karyawan dapat fokus lebih baik pada tugas mereka.
+
+
 ![image](https://github.com/user-attachments/assets/de543e84-439f-4595-bf5e-160c05b0d524)
 ![image](https://github.com/user-attachments/assets/7ad6f753-986b-4125-88e8-194822632647)
