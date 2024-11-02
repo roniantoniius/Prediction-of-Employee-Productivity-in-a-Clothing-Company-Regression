@@ -1,4 +1,5 @@
-![image](https://github.com/user-attachments/assets/91033874-7525-4a77-9f52-83461137d015)# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning Terapan - Roni Antonius Sinabutar
+# Prediksi Produktivitas Karyawan Pada Perusahaan Pakaian
 
 ## Domain Proyek
 Pada industri garment atau clothing, efisiensi dan produktivitas karyawan menjadi aspek penting dalam menjaga kualitas dan memenuhi permintaan pasar yang fluktuatif. Sebagian besar aktivitas di perusahaan garment masih dilakukan secara manual, membuat pemantauan kinerja dan pemberian insentif menjadi proses yang cukup rumit. Pendekatan tradisional ini dapat menyulitkan manajemen dalam mendeteksi penurunan kinerja secara dini serta mengidentifikasi tim-tim dengan performa baik yang layak mendapat insentif. Di sinilah model prediksi produktivitas dapat berperan untuk mempermudah pengambilan keputusan.
@@ -86,6 +87,7 @@ Distribusi beberapa variabel menunjukkan bentuk yang unik, seperti:
 - `over_time` dan `no_of_workers` cenderung menunjukkan distribusi normal atau bimodal.
 
 ![image](https://github.com/user-attachments/assets/807e3f79-e153-48b8-9b6b-0898a9eb11f9)
+![image](https://github.com/user-attachments/assets/91033874-7525-4a77-9f52-83461137d015)
 
 
 #### Fitur yang Dipilih untuk Model
