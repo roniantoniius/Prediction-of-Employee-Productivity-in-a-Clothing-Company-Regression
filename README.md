@@ -101,10 +101,28 @@ Berdasarkan EDA yang dilakukan, beberapa variabel yang akan dimasukkan ke dalam 
 - `no_of_workers`
 - `no_of_style_change`
 
+### Feature Selection
+Tentunya berdasarkan hasil EDA tersebut, kita perlu melakukan proses pemilihan fitur lebih rinci yang dilakukan untuk meningkatkan performa model dengan mengidentifikasi fitur-fitur yang paling relevan terhadap prediksi produktivitas karyawan (`actual_productivity`). Berdasarkan analisis korelasi dengan heatmap, ditemukan bahwa variabel `targeted_productivity` dan `incentive` memiliki korelasi positif terhadap target. Untuk mencari fitur terbaik secara lebih akurat, **Recursive Feature Elimination (RFE)** diterapkan.
+
+
+![image](https://github.com/user-attachments/assets/4e6ea115-6de6-43dd-9dc0-9c44595a968a)
+
+
+- **RFE** berfungsi mengidentifikasi dan mempertahankan fitur-fitur yang paling berkontribusi melalui proses iteratif yang terus-menerus mengeliminasi fitur dengan kontribusi terendah. Kami menggunakan RFE dengan model regresi linear sebagai estimator untuk mendapatkan 10 fitur dengan peringkat tertinggi. Fitur-fitur terpilih ini kemudian akan digunakan pada model utama, dengan tujuan meningkatkan akurasi prediksi dan efisiensi proses.
+
+![image](https://github.com/user-attachments/assets/8b8b639e-8f20-4845-9cbb-793eb2103038)
+
 Dengan memahami persebaran data, missing values, dan potensi outlier, kita dapat memastikan model yang dibangun akan lebih robust dan akurat dalam memprediksi produktivitas karyawan pada industri garment.
 
 
 ## Data Preparation
+
+Pada bagian ini kami melakukan beberapa tahap dalam merubah data supaya sesuai dengan model yang akan digunakan nantinya:
+- Missing Value: Variabel `wip` mengandung 50% baris data yang nilainya hilang, sehingga dilakukan handling dengan mengimputasi nilai rata-rata.
+- Outlier: Terdapat 4 variabel yaitu `target_productivity`, `incentive`, `wip`, dan `over_time` yang mengalami outlier, dan proses handlingnya dilakukan dengan menerapkan IQR untuk menentukan ambang batas dan mengganti nilai yang mengalami outlier tersebut dengan ambang batas tersebut.
+- Variabel X akan menggunakan semua variabel pada dataset selain `actual_productivity` dan `date`. Sedangkan variabel y atau variabel target yang akan diprediksi adalah `actual_productivity`.
+- Membagi data X dan y dengan proporsi test_size adalah 0,75. Artinya akan ada data train sejumlah 75% dataset awal, dan sisanya itu 25% untuk data uji.
+
 ### Feature Engineering
 1. **Encoding Variabel Kategorikal**  
 Variabel-variabel kategorikal seperti `day` dan `department` dikonversi ke bentuk numerik dengan metode **One Hot Encoding**. Hal ini dilakukan agar algoritma regresi dapat memanfaatkan informasi tersebut tanpa mengasumsikan adanya hubungan urutan di antara kategori. Sementara itu, variabel `quarter` di-encode menggunakan **OrdinalEncoder** karena memiliki urutan tertentu yang bisa relevan dalam analisis.
@@ -118,18 +136,6 @@ Distribusi variabel numerik diperiksa terlebih dahulu untuk menentukan metode sc
 ![image](https://github.com/user-attachments/assets/1218059c-c31e-415a-874e-66bcad5a8c27)
 
 
-### Feature Selection
-Proses pemilihan fitur dilakukan untuk meningkatkan performa model dengan mengidentifikasi fitur-fitur yang paling relevan terhadap prediksi produktivitas karyawan (`actual_productivity`). Berdasarkan analisis korelasi dengan heatmap, ditemukan bahwa variabel `targeted_productivity` dan `incentive` memiliki korelasi positif terhadap target. Untuk mencari fitur terbaik secara lebih akurat, **Recursive Feature Elimination (RFE)** diterapkan.
-
-
-![image](https://github.com/user-attachments/assets/4e6ea115-6de6-43dd-9dc0-9c44595a968a)
-
-
-- **RFE** berfungsi mengidentifikasi dan mempertahankan fitur-fitur yang paling berkontribusi melalui proses iteratif yang terus-menerus mengeliminasi fitur dengan kontribusi terendah. Kami menggunakan RFE dengan model regresi linear sebagai estimator untuk mendapatkan 10 fitur dengan peringkat tertinggi. Fitur-fitur terpilih ini kemudian akan digunakan pada model utama, dengan tujuan meningkatkan akurasi prediksi dan efisiensi proses.
-
-![image](https://github.com/user-attachments/assets/8b8b639e-8f20-4845-9cbb-793eb2103038)
-
-
 ### Handling Imbalance
 Distribusi variabel target `actual_productivity` menunjukkan ketidakseimbangan, di mana 86% data bernilai di atas 0.5. Untuk menangani hal ini, **Synthetic Minority Over-sampling Technique for Regression (SMOTER)** diterapkan, sebuah teknik oversampling yang bertujuan meningkatkan representasi dari nilai-nilai yang kurang umum dalam variabel target. SMOTER memperkirakan sampel sintetis pada kelas-kelas minoritas untuk mendapatkan data yang lebih seimbang, memungkinkan model menangkap variasi yang lebih luas dalam data produktivitas aktual.
 
@@ -140,7 +146,14 @@ Handling Imbalance Case Result:
 ![image](https://github.com/user-attachments/assets/fceaeda2-ce67-4774-81d8-dc8d320fdd63)
 
 ## Modeling
-Pertama-tama data dipecah menjadi data latih (X_train, y_train) dan data uji (X_test, y_test) dengan ukuran (757, 13) untuk train set dan (253, 13) untuk test set.
+Berikut adalah tahapan yang dilakukan pada **Modeling**:
+1. Membuat fungsi evaluasi terhadap model yang akan dilatih dan diuji nanti.
+2. Mendefinisikan setiap objek yang memanggil setiap algoritma dan parameter yang akan digunakan untukk menentukan model dengan performa terbaik.
+3. Melakukan proses training data menggunakan setiap algoritma yang sudah didefinisikan sebelumnya beserta parameter yang digunakan. Caranya dengan menerapkan fungsi fit() dengan parameter data latih, lalu melakukan prediksi dengan predict() namun masih terhadap data train. Lalu menerapkan fungsi pada tahap (1) dengan memasukkan parameter nilai prediksi aktual dan nilai prediksi yang dihasilkan model
+4. Menerapkan hal yang sama pada tahap (3) yaitu menerapkan fit() terhadap data train, namun disini menerapkan predict() terhadap data uji atau data test.
+5. Menganalisis top 3 model terbaik yang akan diterapkan Hyperparameter tuning dengan menggunakan RandomizedSearchCV supaya tidak memakan waktu yang lama.
+6. Terakhir menentukan model dengan performa terbaik.
+
 
 Berikut adalah penjelasan dari setiap algoritma yang digunakan, termasuk parameter yang digunakan, kelebihan, dan kekurangan masing-masing model:
 
@@ -200,20 +213,63 @@ Berdasarkan evaluasi nilai MAE, MSE, RMSE, dan sMAPE, kami mengidentifikasi tiga
 Proses tuning dilakukan pada ketiga model terbaik dengan menggunakan `RandomizedSearchCV` untuk mengoptimalkan performa. Berikut hasil tuning:
 
 1. **CatBoost Regression**:
+Cat Boost menerapkan RandomizedSearchCV dengan kombinasi parameter pada algoritma cat boost yaitu:
+```
+'learning_rate': np.linspace(0.01, 0.3),
+'depth': [4, 6, 8, 10],
+'l2_leaf_reg': [1, 3, 5, 7, 9],
+'iterations': randint(50, 200)
+```
+
+Sedangkan pada konfigurasi parameter yang digunakan pada hyperparameter tuning yaitu:
+```
+n_iter=50,
+scoring='neg_mean_squared_error',
+cv=5
+```
+
+Sehingga ditemukan kombinasi parameter terbaik:
    - Best Parameter: `{'depth': 4, 'iterations': 190, 'l2_leaf_reg': 5, 'learning_rate': 0.199}`
    
 2. **Random Forest Regression**:
+Random Forest juga menerapkan RandomizedSearchCV dengan kombinasi parameter pada algoritma cat boost yaitu:
+```
+'learning_rate': np.linspace(0.01, 0.3),
+'depth': [4, 6, 8, 10],
+'l2_leaf_reg': [1, 3, 5, 7, 9],
+'iterations': randint(50, 200)
+```
+
+Sedangkan pada konfigurasi parameter yang digunakan pada hyperparameter tuning yaitu:
+```
+n_iter=50,
+scoring='neg_mean_squared_error',
+cv=5
+```
+Sehingga kombinasi parameter terbaik yang ditemukan adalah:
    - Best Parameter: `{'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 164}`
    
 3. **XGBoost Regression**:
+XG Boost juga menerapkan RandomizedSearchCV dengan kombinasi parameter pada algoritma cat boost yaitu:
+```
+'learning_rate': np.linspace(0.01, 0.3),
+'depth': [4, 6, 8, 10],
+'l2_leaf_reg': [1, 3, 5, 7, 9],
+'iterations': randint(50, 200)
+```
+
+Sedangkan pada konfigurasi parameter yang digunakan pada hyperparameter tuning yaitu:
+```
+n_iter=50,
+scoring='neg_mean_squared_error',
+cv=5
+```
+
+Maka kombinasi terbaik parameter model ensemble learning XG Boost adalah:
    - Best Parameter: `{'colsample_bytree': 0.4, 'gamma': 0, 'learning_rate': 0.06, 'max_depth': 4, 'min_child_weight': 5, 'n_estimators': 163}`
 
 ### Model Terbaik
-Model **Cat Boost** setelah diterapkan Hyperparameter Tuning menunjukkan performa terbaik dalam memprediksi produktivitas karyawan dengan nilai evaluasi sebagai berikut:
-- MAE: 0.0944
-- MSE: 0.0197
-- RMSE: 0.1402
-- sMAPE: 17.2017%
+Model **Cat Boost** setelah diterapkan Hyperparameter Tuning menunjukkan performa terbaik dalam memprediksi produktivitas karyawan dengan nilai evaluasi performa yang memuaskan dijelaskan pada bagian *Evaluation* selanjutnya.
 
 Model ini dipilih sebagai model final karena hasilnya yang stabil pada train dan test set, serta menunjukkan performa **good fit** tanpa tanda overfitting. Model ini diharapkan memberikan prediksi produktivitas yang akurat untuk mendukung pengambilan keputusan di industri garment.
 
